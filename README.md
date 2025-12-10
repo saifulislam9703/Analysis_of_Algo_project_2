@@ -12,7 +12,6 @@ A comprehensive implementation and analysis of two fundamental computational pro
   - [2. Network Traffic Load Balancing via Maximum Flow](#2-network-traffic-load-balancing-via-maximum-flow)
 - [Repository Structure](#repository-structure)
 - [Installation](#installation)
-- [Usage](#usage)
 - [Authors](#authors)
 
 ## 🎯 Overview
@@ -101,64 +100,6 @@ pip install pulp
 git clone https://github.com/saifulislam9703/Analysis_of_Algo_project_2.git
 cd Analysis_of_Algo_project_2
 ```
-
-## 🚀 Usage
-
-### NP-Hard Problem (Locomotive Assignment)
-
-**Run Jupyter Notebook:**
-```bash
-jupyter notebook NP-HARD.ipynb
-```
-
-**Key Functions:**
-```python
-from np_hard_solver import *
-
-# Generate problem instance
-trains = generate_trains(n=20, seed=42)
-locomotives = generate_locomotives(k=5)
-
-# Solve using dynamic programming
-assignment = solve_dp(trains, locomotives)
-
-# Solve using greedy approximation
-assignment = solve_ffd(trains, locomotives)
-
-# Solve using ILP
-assignment = solve_ilp(trains, locomotives)
-```
-
-### Network Flow Problem (Traffic Load Balancing)
-
-**Run Python Script:**
-```bash
-python network_flow_solver.py
-```
-
-**Example Usage:**
-```python
-from network_flow_solver import NetworkFlowSolver
-
-# Create network topology
-solver = NetworkFlowSolver()
-solver.add_source("source", capacity=1000)
-solver.add_server("server1", processing_capacity=500)
-solver.add_server("server2", processing_capacity=500)
-solver.add_sink("sink")
-
-# Add edges with bandwidth constraints
-solver.add_edge("source", "server1", bandwidth=600)
-solver.add_edge("source", "server2", bandwidth=600)
-solver.add_edge("server1", "sink", bandwidth=500)
-solver.add_edge("server2", "sink", bandwidth=500)
-
-# Solve and get max flow
-max_flow, flow_dict = solver.solve()
-print(f"Maximum flow: {max_flow}")
-```
-
-
 ## 👥 Authors
 
 **Ahmed Rageeb Ahsan**
