@@ -1,0 +1,147 @@
+\documentclass[sigconf]{acmart}
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Remove ACM copyright/conference info for assignment
+\settopmatter{printacmref=false}
+\renewcommand\footnotetextcopyrightpermission[1]{}
+\pagestyle{plain}
+
+\title{Network Traffic Load Balancing via Maximum Flow}
+\subtitle{A Polynomial Reduction Approach}
+
+\author{Your Name Here}
+\affiliation{
+  \institution{Your University}
+  \city{City}
+  \state{State}
+  \country{Country}
+}
+\email{your.email@university.edu}
+
+\begin{document}
+
+
+\section{Wildlife Sensor Placement $\rightarrow$ Set Cover (reduction and correctness)}
+
+\subsection{Problem statements}
+Wildlife research team wants to place a small number of camera/sensor traps to monitor a set of animal trails in a protected area. Each available candidate sensor location covers a subset of trails (some locations see multiple trails). Sensors are expensive, so we want the smallest number of sensors such that every trail is observed (covered) by at least one sensor. This is the classic facility/coverage problem in ecology.
+
+This problem is an instance of Set Cover (NP-hard). We will use the standard greedy approximation.
+\subsection{Abstract}
+\textbf{Set-Cover (decision).} Given a universe $U=\{e_1,\dots,e_n\}$, a family of subsets $\mathcal S=\{S_1,\dots,S_m\}$ with $S_i\subseteq U$, and integer $k$, decide whether there exists a subcollection $\mathcal C\subseteq\mathcal S$ with $|\mathcal C|\le k$ such that $\bigcup_{S\in\mathcal C} S = U$.
+
+\textbf{Wildlife Sensor Placement (decision).} Given a set of trails $T=\{t_1,\dots,t_n\}$, candidate sensor locations $L=\{\ell_1,\dots,\ell_m\}$ where location $\ell_i$ observes subset $C_i\subseteq T$, and integer $k$, decide whether there exist at most $k$ locations whose combined coverage is all trails: $\bigcup_{\ell\in L'} C_\ell = T$.
+
+\subsection{Polynomial-time reduction}
+
+We define a polynomial-time function $f$ that maps any Set-Cover instance $(U,\mathcal S,k)$ to a Wildlife instance $(T,L,\{C_i\},k)$ as follows:
+
+\begin{itemize}
+  \item Set $T := U$ (identify each trail $t$ with an element $e\in U$).
+  \item For each $S_i\in\mathcal S$ create a candidate location $\ell_i\in L$ with coverage $C_i := S_i$.
+  \item Keep the integer $k$ unchanged.
+\end{itemize}
+
+The mapping clearly runs in time $O(n + \sum_i |S_i|)$, i.e., polynomial in the input size.
+
+\subsection{Correctness (if and only if)}
+
+We must show $(U,\mathcal S,k)$ is a ``yes'' instance of Set-Cover iff $(T,L,\{C_i\},k)$ is a ``yes'' instance of Wildlife Sensor Placement.
+
+\paragraph{($\Rightarrow$)} Suppose there exists $\mathcal C\subseteq\mathcal S$ with $|\mathcal C|\le k$ and $\bigcup_{S\in\mathcal C} S = U$. For each $S_i\in\mathcal C$, pick the corresponding location $\ell_i$. Then the set of chosen locations has size $\le k$ and covers all trails (because $C_i = S_i$), hence the Wildlife instance is a yes-instance.
+
+\paragraph{($\Leftarrow$)} Conversely, suppose there exists a set of locations $L'\subseteq L$ with $|L'|\le k$ that covers all trails: $\bigcup_{\ell\in L'} C_\ell = T$. Map each chosen location $\ell_i\in L'$ to its corresponding set $S_i\in\mathcal S$. The mapped collection $\mathcal C$ has size $\le k$ and covers $U$ (since $T=U$ and $C_i=S_i$), hence the Set-Cover instance is a yes-instance.
+
+Thus the reduction is sound and complete. Since Set-Cover is NP-complete, Wildlife Sensor Placement is NP-hard (and in NP in the decision form), so it is NP-complete.
+
+\qed
+
+\section{Algorithms for Wildlife Sensor Placement}
+
+Let $n=|U|$ be the number of trails and $m$ the number of candidate locations.
+
+\subsection{Exact algorithm (bitmask DP)}
+
+When $n$ is small (e.g. $n\le 25$), we can compute the optimum exactly via dynamic programming over subsets (bitmask DP).
+
+Define for each set $S_i$ its bitmask $b_i\in\{0,\dots, 2^n-1\}$. Let $\text{DP}[x]$ be the minimum number of sets to cover element-mask $x$. Initialize $\text{DP}[0]=0$ and $\text{DP}[x]=\infty$ otherwise. For each mask $x$ iterate through all sets and update:
+\[
+\text{DP}[x \mid b_i] \leftarrow \min(\text{DP}[x \mid b_i],\, \text{DP}[x]+1).
+\]
+Answer: $\text{DP}[(1\ll n)-1]$. Complexity: $O(m 2^n)$ time and $O(2^n)$ memory.
+
+\subsection{Greedy algorithm (unweighted)}
+
+Greedy repeatedly picks the set covering the largest number of currently uncovered elements.
+
+Pseudocode:
+\begin{verbatim}
+U_rem := U; C := {}
+while U_rem not empty:
+    choose S in S_collection maximizing |S ∩ U_rem|
+    add S to C
+    U_rem := U_rem \ S
+return C
+\end{verbatim}
+
+\subsubsection{Approximation guarantee}
+
+Let $\text{OPT}$ be the size of an optimal cover and $n=|U|$. The greedy algorithm returns a cover of size at most $H_n \cdot \text{OPT}$, where $H_n = 1 + 1/2 + \cdots + 1/n \le \ln n + 1$.
+
+\emph{Proof sketch.} Let $k^*=\text{OPT}$. At an iteration when $r$ elements remain uncovered, some set in the optimal cover covers at least $r/k^*$ of them, hence the greedy pick covers at least $r/k^*$. This gives a multiplicative decrease and by summing/charging yields the $H_n$ bound (full standard proof in textbooks).
+
+\subsection{Weighted greedy (cost-effectiveness)}
+
+If set $S_i$ has cost $c_i$, pick each time the set minimizing $c_i / |S_i \cap U_{\text{rem}}|$. This weighted greedy also gives an $H_n$-approximation; the proof is analogous using a cost-charging argument.
+
+\subsection{LP relaxation + randomized rounding (theory)}
+
+Formulate Set-Cover as integer program:
+\[
+\min\ \sum_{i=1}^m x_i \quad\text{s.t.}\quad \sum_{i:\,e\in S_i} x_i \ge 1 \ \ \forall e\in U,\quad x_i\in\{0,1\}.
+\]
+Relax to $x_i\in[0,1]$, solve the LP to obtain $x^*$. Randomized rounding (or scaling by $H_n$ and deterministic threshold) obtains an $H_n$-approximate solution in expectation (primal-dual constructions yield deterministic guarantees). See standard LP rounding proofs for details.
+
+\subsection{Practical choices}
+\begin{itemize}
+  \item Use exact DP if $n$ is small.
+  \item Use greedy (or weighted greedy) for large instances — fast and usually effective.
+  \item Optionally, after greedy, run local search (swap out/in) to further improve cost.
+  \item For weighted/costly cases, consider LP-based methods if an LP solver is available.
+\end{itemize}
+
+
+\section{Experimental Results}
+
+\subsection{Greedy Approximation Ratio vs Universe Size}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{ratio_vs_n.png}
+\end{center}
+
+\subsection{Runtime Comparison: Exact vs Greedy}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{runtime_comparison.png}
+\end{center}
+
+\subsection{Histogram of Approximation Ratios (n=14)}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{ratio_histogram.png}
+\end{center}
+
+\subsection{Density Sweep (n=16)}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{density_sweep.png}
+\end{center}
+
+
+
+
+\end{document}
