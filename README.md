@@ -1,6 +1,5 @@
-# Advanced Algorithms: NP-Complete & Network Flow Problems
+# Analysis of Algorithms: NP-Complete & Network Flow Problems
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
 A comprehensive implementation and analysis of two fundamental computational problems: an NP-Hard optimization problem and a polynomial-time reducible network flow problem.
@@ -14,18 +13,11 @@ A comprehensive implementation and analysis of two fundamental computational pro
 - [Repository Structure](#repository-structure)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Algorithms Implemented](#algorithms-implemented)
-- [Experimental Results](#experimental-results)
 - [Authors](#authors)
-- [License](#license)
 
 ## 🎯 Overview
 
 This repository contains solutions to two complex computational problems studied as part of advanced algorithms research at the University of Florida. The project demonstrates both theoretical complexity analysis and practical algorithm implementation.
-
-**Total Points: 100**
-- NP-Complete/NP-Hard Problem: 50 points
-- Network Flow Problem: 50 points
 
 ## 🚂 Problems Solved
 
@@ -106,8 +98,8 @@ pip install pulp
 ### Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/advanced-algorithms-project.git
-cd advanced-algorithms-project
+git clone https://github.com/saifulislam9703/Analysis_of_Algo_project_2.git
+cd Analysis_of_Algo_project_2
 ```
 
 ## 🚀 Usage
@@ -166,51 +158,6 @@ max_flow, flow_dict = solver.solve()
 print(f"Maximum flow: {max_flow}")
 ```
 
-## ⚙️ Algorithms Implemented
-
-### NP-Hard Problem
-
-| Algorithm | Time Complexity | Space Complexity | Approximation Ratio |
-|-----------|----------------|------------------|---------------------|
-| Dynamic Programming | O(2ⁿ · k · W) | O(2ⁿ · k) | Optimal |
-| First-Fit Decreasing (FFD) | O(n log n) | O(k) | ≤ 11/9 OPT + 6/9 |
-| Best-Fit Decreasing (BFD) | O(n log n) | O(k) | ≤ 11/9 OPT + 6/9 |
-| Integer Linear Programming | Exponential* | Polynomial | Optimal |
-
-*ILP solving time depends on instance structure
-
-### Network Flow Problem
-
-| Algorithm | Time Complexity | Space Complexity | Optimality |
-|-----------|----------------|------------------|------------|
-| Edmonds-Karp | O(V · E²) | O(V + E) | Optimal |
-
-## 📊 Experimental Results
-
-### NP-Hard Problem Results
-
-![Runtime Comparison](runtime_comparison_1.png)
-*Runtime comparison across different algorithms*
-
-![Bins Comparison](bins_comparison.png)
-*Number of locomotives used by different algorithms*
-
-![Approximation Ratio](ratio_vs_n_1.png)
-*Approximation ratio vs problem size*
-
-### Network Flow Results
-
-![Experimental Results](experimental_results.png)
-*Network capacity utilization and flow distribution*
-
-![Density Sweep](density_sweep.png)
-*Performance across different network densities*
-
-**Key Findings:**
-- ✅ Network utilization consistently >95%
-- ✅ Server capacity constraints strictly enforced
-- ✅ Algorithm scales efficiently with network size
-- ✅ Runtime matches theoretical O(V · E²) complexity
 
 ## 👥 Authors
 
@@ -221,44 +168,3 @@ print(f"Maximum flow: {max_flow}")
 **Saiful Islam**
 - Email: saiful.islam@ufl.edu  
 - University of Florida
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- University of Florida, Department of Computer & Information Science & Engineering
-- Course instructors and teaching assistants
-- Research papers and textbooks that informed our theoretical analysis
-
-## 📖 Citation
-
-If you use this work in your research, please cite:
-
-```bibtex
-@article{ahsan2025locomotive,
-  title={Maintenance-Constrained Locomotive Assignment: NP-Hardness, Exact Algorithms, and Practical Approximations},
-  author={Ahsan, Ahmed Rageeb and Islam, Saiful},
-  journal={University of Florida},
-  year={2025}
-}
-
-@article{ahsan2025network,
-  title={Network Traffic Load Balancing via Maximum Flow: A Polynomial Reduction Approach},
-  author={Ahsan, Ahmed Rageeb and Islam, Saiful},
-  journal={University of Florida},
-  year={2025}
-}
-```
-
-## 🔗 References
-
-1. Garey, M. R., & Johnson, D. S. (1979). *Computers and Intractability: A Guide to the Theory of NP-Completeness*
-2. Cormen, T. H., et al. (2009). *Introduction to Algorithms* (3rd ed.)
-3. Edmonds, J., & Karp, R. M. (1972). "Theoretical improvements in algorithmic efficiency for network flow problems"
-4. Johnson, D. S. (1973). "Near-optimal bin packing algorithms"
-
----
-
-**⭐ If you find this project useful, please consider giving it a star!**
