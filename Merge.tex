@@ -1,0 +1,24 @@
+\documentclass{article}
+\usepackage{pdfpages}
+\usepackage{hyperref}
+\begin{document}
+
+% --- Include the two reports in order ---
+\includepdf[pages=-]{Network-flow.pdf}
+\includepdf[pages=-]{NP-HARD.pdf}
+
+% --- Final page with code reference ---
+\newpage
+\thispagestyle{empty}
+\begin{center}
+    \vspace*{4cm}
+    \Huge{\textbf{Code Repository}}\\[1cm]
+    \Large{All Python source code, experiment scripts, and runtime plots used in both reports are available at the following links:}\\[1.2cm]
+    
+    \Large{\textbf{GitHub Repository:}}\\[0.3cm]
+    \Large{\href{https://github.com/saifulislam9703/Analysis_of_Algo_project_2}{\texttt{AOA Project2}}}\\[1cm]
+    
+    \Large{\textit{End of Project 2 Submission}}
+\end{center}
+
+\end{document}
